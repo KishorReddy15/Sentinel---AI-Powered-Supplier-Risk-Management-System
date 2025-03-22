@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PageTransition from '@/components/ui/PageTransition';
 import GlassCard from '@/components/ui/GlassCard';
@@ -15,20 +14,25 @@ const Auth = () => {
   const navigate = useNavigate();
   const { login, signup, demoLogin } = useAuth();
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(email, password);
+    await login(email, password);
     navigate('/dashboard');
   };
   
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     // Split name into firstName and lastName for the signup function
     const nameParts = name.split(' ');
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
     
-    signup(email, password, firstName, lastName, company);
+    await signup(email, password, firstName, lastName, company);
+    navigate('/dashboard');
+  };
+
+  const handleDemoLogin = () => {
+    demoLogin();
     navigate('/dashboard');
   };
 
@@ -85,7 +89,7 @@ const Auth = () => {
                   Log In
                 </Button>
                 
-                <Button type="button" variant="outline" className="w-full" onClick={demoLogin}>
+                <Button type="button" variant="outline" className="w-full" onClick={handleDemoLogin}>
                   Try Demo Account
                 </Button>
               </form>
@@ -159,7 +163,7 @@ const Auth = () => {
                   Sign Up
                 </Button>
                 
-                <Button type="button" variant="outline" className="w-full" onClick={demoLogin}>
+                <Button type="button" variant="outline" className="w-full" onClick={handleDemoLogin}>
                   Try Demo Account
                 </Button>
               </form>

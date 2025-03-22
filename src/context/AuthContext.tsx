@@ -1,6 +1,5 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 
 // Demo user
@@ -37,7 +36,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   // Check for saved user on initial load
   useEffect(() => {
@@ -77,7 +75,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(newUser);
       localStorage.setItem('sentinelUser', JSON.stringify(newUser));
       toast.success('Successfully logged in');
-      navigate('/dashboard');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Login failed');
       console.error('Login error:', error);
@@ -119,7 +116,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(newUser);
       localStorage.setItem('sentinelUser', JSON.stringify(newUser));
       toast.success('Account created successfully');
-      navigate('/dashboard');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Signup failed');
       console.error('Signup error:', error);
@@ -132,14 +128,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(DEMO_USER);
     localStorage.setItem('sentinelUser', JSON.stringify(DEMO_USER));
     toast.success('Successfully logged in with demo account');
-    navigate('/dashboard');
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('sentinelUser');
     toast.info('Successfully logged out');
-    navigate('/');
   };
 
   return (
