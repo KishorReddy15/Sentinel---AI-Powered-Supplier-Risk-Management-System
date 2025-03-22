@@ -13,7 +13,7 @@ const Auth = () => {
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
   const navigate = useNavigate();
-  const { login, signup } = useAuth();
+  const { login, signup, demoLogin } = useAuth();
   
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,12 +23,12 @@ const Auth = () => {
   
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    signup(email, password, name, company);
-    navigate('/dashboard');
-  };
-  
-  const handleDemoLogin = () => {
-    login('demo@sentinelai.com', 'password123');
+    // Split name into firstName and lastName for the signup function
+    const nameParts = name.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
+    signup(email, password, firstName, lastName, company);
     navigate('/dashboard');
   };
 
@@ -85,7 +85,7 @@ const Auth = () => {
                   Log In
                 </Button>
                 
-                <Button type="button" variant="outline" className="w-full" onClick={handleDemoLogin}>
+                <Button type="button" variant="outline" className="w-full" onClick={demoLogin}>
                   Try Demo Account
                 </Button>
               </form>
@@ -159,7 +159,7 @@ const Auth = () => {
                   Sign Up
                 </Button>
                 
-                <Button type="button" variant="outline" className="w-full" onClick={handleDemoLogin}>
+                <Button type="button" variant="outline" className="w-full" onClick={demoLogin}>
                   Try Demo Account
                 </Button>
               </form>

@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-interface AnimatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AnimatedCardProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
@@ -15,7 +15,6 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
   className, 
   delay = 0,
   hoverEffect = true,
-  ...props 
 }) => {
   return (
     <motion.div
@@ -35,7 +34,6 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
         "rounded-lg bg-white shadow-elevated transition-all duration-300",
         className
       )}
-      {...props}
     >
       {children}
     </motion.div>

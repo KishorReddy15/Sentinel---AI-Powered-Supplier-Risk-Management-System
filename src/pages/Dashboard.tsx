@@ -19,13 +19,18 @@ const Dashboard = () => {
     return null;
   }
 
+  // Get full name or use email if name isn't available
+  const displayName = user?.firstName ? 
+    `${user.firstName} ${user.lastName || ''}`.trim() : 
+    user?.email.split('@')[0] || 'User';
+
   return (
     <PageTransition>
       <div className="container mx-auto px-4 py-10">
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-bold">Dashboard</h1>
           <div className="text-right">
-            <p className="font-medium">Welcome, {user?.name || 'User'}</p>
+            <p className="font-medium">Welcome, {displayName}</p>
             <p className="text-sm text-gray-500">{user?.company || 'Company'}</p>
           </div>
         </div>
