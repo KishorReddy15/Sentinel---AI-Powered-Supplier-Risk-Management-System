@@ -1,38 +1,37 @@
-
 import React, { useState } from 'react';
 import PageTransition from '@/components/ui/PageTransition';
 import GlassCard from '@/components/ui/GlassCard';
 import { scenarioData } from '@/data/dummyData';
-import { Plus, BarChart2, Briefcase, AlertTriangle, TrendingDown, Workflow } from 'lucide-react';
+import { Plus, BarChart2, Briefcase, AlertTriangle, TrendingDown, Workflow, Check, Play, ArrowRight, FileEdit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
-// Simple chart component to demonstrate financial impact
 const FinancialImpactChart = ({ scenarioId }: { scenarioId: number }) => {
-  // Find the scenario
   const scenario = scenarioData.find(s => s.id === scenarioId);
   if (!scenario) return null;
   
-  // Determine impact metrics based on the scenario
   const impact = scenario.financialImpact;
   const weeks = scenario.duration / 7;
   const data = [];
   
-  // Generate weekly impact data
   for (let i = 0; i <= weeks; i++) {
-    // Start with 0 and gradually increase to full impact, then slowly decrease
     let weeklyImpact = 0;
     if (i < weeks / 3) {
-      // Ramp up phase
       weeklyImpact = (impact / weeks) * (i * 3);
     } else if (i < 2 * weeks / 3) {
-      // Peak impact
       weeklyImpact = impact / (weeks / 3);
     } else {
-      // Recovery phase
       weeklyImpact = impact / (weeks / 3) * (weeks - i);
     }
     
@@ -51,16 +50,13 @@ const FinancialImpactChart = ({ scenarioId }: { scenarioId: number }) => {
         <div className="text-xs font-medium">Total Impact: ${impact.toLocaleString()}</div>
       </div>
       <div className="relative h-52">
-        {/* Y-axis */}
         <div className="absolute left-0 top-0 bottom-0 w-10 flex flex-col justify-between">
           <div className="text-xs text-gray-500">${maxImpact.toLocaleString()}</div>
           <div className="text-xs text-gray-500">${(maxImpact/2).toLocaleString()}</div>
           <div className="text-xs text-gray-500">$0</div>
         </div>
         
-        {/* Chart area */}
         <div className="absolute left-12 right-0 top-0 bottom-0 bg-gray-50 border rounded-md">
-          {/* X-axis labels */}
           <div className="absolute left-0 right-0 bottom-0 h-5 flex justify-between">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="text-xs text-gray-500 px-2">
@@ -69,7 +65,6 @@ const FinancialImpactChart = ({ scenarioId }: { scenarioId: number }) => {
             ))}
           </div>
           
-          {/* Bars */}
           <div className="absolute left-0 right-0 top-0 bottom-5 flex items-end">
             {data.map((d, i) => (
               <div 
@@ -93,9 +88,7 @@ const FinancialImpactChart = ({ scenarioId }: { scenarioId: number }) => {
   );
 };
 
-// Risk mitigation options component
 const RiskMitigationOptions = ({ scenarioType }: { scenarioType: string }) => {
-  // Different mitigation strategies based on scenario type
   const mitigations: Record<string, { title: string, description: string, cost: string, timeframe: string, effectiveness: number }[]> = {
     'Labor Disruption': [
       { 
@@ -214,7 +207,6 @@ const RiskMitigationOptions = ({ scenarioType }: { scenarioType: string }) => {
     ]
   };
   
-  // Default to a generic set if the scenario type isn't matched
   const options = mitigations[scenarioType] || mitigations['Production Disruption'];
   
   return (
@@ -250,10 +242,73 @@ const RiskMitigationOptions = ({ scenarioType }: { scenarioType: string }) => {
   );
 };
 
+const ScenarioActions = ({ scenario, onRunSimulation, onEdit, onDelete }: { 
+  scenario: any;
+  onRunSimulation: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}) => {
+  return (
+    <div className="mt-6 space-y-4">
+      <h3 className="text-lg font-medium">Recommended Actions</h3>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div 
+          className="bg-white shadow rounded-lg p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow cursor-pointer"
+          onClick={onRunSimulation}
+        >
+          <div className="flex items-center">
+            <div className="rounded-full bg-blue-100 p-2 mr-3">
+              <Play className="h-4 w-4 text-blue-600" />
+            </div>
+            <div>
+              <h4 className="font-medium">Run Detailed Simulation</h4>
+              <p className="text-sm text-gray-600">Generate in-depth impact analysis and timeline projections</p>
+            </div>
+          </div>
+        </div>
+        
+        <div 
+          className="bg-white shadow rounded-lg p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow cursor-pointer"
+          onClick={() => {
+            toast.success("Mitigation plan activated");
+          }}
+        >
+          <div className="flex items-center">
+            <div className="rounded-full bg-green-100 p-2 mr-3">
+              <Check className="h-4 w-4 text-green-600" />
+            </div>
+            <div>
+              <h4 className="font-medium">Activate Mitigation Plan</h4>
+              <p className="text-sm text-gray-600">Implement recommended risk mitigation strategies</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+        <Button variant="outline" size="sm" className="flex items-center justify-center" onClick={onEdit}>
+          <FileEdit className="mr-2 h-4 w-4" /> Edit Scenario
+        </Button>
+        <Button variant="outline" size="sm" className="flex items-center justify-center" onClick={onDelete}>
+          <Trash2 className="mr-2 h-4 w-4 text-red-500" /> Delete Scenario
+        </Button>
+        <Button variant="outline" size="sm" className="flex items-center justify-center" onClick={() => {
+          toast.info("Exporting scenario details...");
+        }}>
+          <ArrowRight className="mr-2 h-4 w-4" /> Export Scenario
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 const ScenarioPlanning = () => {
   const [scenarios, setScenarios] = useState(scenarioData);
   const [selectedScenario, setSelectedScenario] = useState<any>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [newScenario, setNewScenario] = useState({
     name: '',
     type: 'Labor Disruption',
@@ -266,7 +321,6 @@ const ScenarioPlanning = () => {
   const handleAddScenario = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create new scenario with default values for demo
     const scenario = {
       id: scenarios.length + 1,
       name: newScenario.name,
@@ -276,14 +330,20 @@ const ScenarioPlanning = () => {
       financialImpact: parseInt(newScenario.financialImpact) || 1000000,
       duration: parseInt(newScenario.duration) || 30,
       probability: parseInt(newScenario.probability) || 65,
-      affectedSuppliers: [1, 2], // Demo data
+      affectedSuppliers: [1, 2],
     };
     
-    // Add to state
-    setScenarios([...scenarios, scenario]);
-    setOpenDialog(false);
+    if (isEditMode && selectedScenario) {
+      setScenarios(scenarios.map(s => s.id === selectedScenario.id ? { ...s, ...scenario, id: selectedScenario.id } : s));
+      toast.success(`Updated scenario: ${scenario.name}`);
+    } else {
+      setScenarios([...scenarios, scenario]);
+      toast.success(`Added scenario: ${scenario.name}`);
+    }
     
-    // Reset form
+    setOpenDialog(false);
+    setIsEditMode(false);
+    
     setNewScenario({
       name: '',
       type: 'Labor Disruption',
@@ -292,12 +352,42 @@ const ScenarioPlanning = () => {
       duration: '',
       probability: '',
     });
-    
-    toast.success(`Added scenario: ${scenario.name}`);
   };
 
   const handleViewScenario = (scenario: any) => {
     setSelectedScenario(scenario);
+  };
+  
+  const handleEditScenario = () => {
+    if (!selectedScenario) return;
+    
+    setNewScenario({
+      name: selectedScenario.name,
+      type: selectedScenario.type,
+      impactLevel: selectedScenario.impactLevel,
+      financialImpact: selectedScenario.financialImpact.toString(),
+      duration: selectedScenario.duration.toString(),
+      probability: selectedScenario.probability.toString(),
+    });
+    
+    setIsEditMode(true);
+    setOpenDialog(true);
+  };
+  
+  const handleDeleteScenario = () => {
+    if (!selectedScenario) return;
+    
+    setScenarios(scenarios.filter(s => s.id !== selectedScenario.id));
+    toast.success(`Deleted scenario: ${selectedScenario.name}`);
+    setSelectedScenario(null);
+    setIsDeleteConfirmOpen(false);
+  };
+  
+  const handleRunSimulation = () => {
+    toast.success("Running detailed simulation...");
+    setTimeout(() => {
+      toast.success("Simulation complete. Results updated in the analysis section.");
+    }, 2000);
   };
 
   return (
@@ -308,15 +398,18 @@ const ScenarioPlanning = () => {
           <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
               <Button>
-                <Plus className="mr-2 h-4 w-4" /> Add Scenario
+                <Plus className="mr-2 h-4 w-4" /> {isEditMode ? 'Edit Scenario' : 'Add Scenario'}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
               <form onSubmit={handleAddScenario}>
                 <DialogHeader>
-                  <DialogTitle>Create New Scenario</DialogTitle>
+                  <DialogTitle>{isEditMode ? 'Edit Scenario' : 'Create New Scenario'}</DialogTitle>
                   <DialogDescription>
-                    Define a new risk scenario to simulate and plan for potential supply chain disruptions.
+                    {isEditMode 
+                      ? 'Modify this risk scenario to update your supply chain disruption planning.'
+                      : 'Define a new risk scenario to simulate and plan for potential supply chain disruptions.'
+                    }
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -414,7 +507,7 @@ const ScenarioPlanning = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Create Scenario</Button>
+                  <Button type="submit">{isEditMode ? 'Update Scenario' : 'Create Scenario'}</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
@@ -487,6 +580,13 @@ const ScenarioPlanning = () => {
                       <h3 className="text-lg font-medium mb-3">Financial Impact Analysis</h3>
                       <FinancialImpactChart scenarioId={selectedScenario.id} />
                     </div>
+                    
+                    <ScenarioActions 
+                      scenario={selectedScenario}
+                      onRunSimulation={handleRunSimulation}
+                      onEdit={handleEditScenario}
+                      onDelete={() => setIsDeleteConfirmOpen(true)}
+                    />
                   </div>
                   
                   <div>
@@ -640,46 +740,69 @@ const ScenarioPlanning = () => {
               </Button>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2 border">Scenario Name</th>
-                    <th className="px-4 py-2 border">Created</th>
-                    <th className="px-4 py-2 border">Type</th>
-                    <th className="px-4 py-2 border">Impact Level</th>
-                    <th className="px-4 py-2 border">Financial Impact</th>
-                    <th className="px-4 py-2 border">Probability</th>
-                    <th className="px-4 py-2 border">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Scenario Name</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Impact Level</TableHead>
+                    <TableHead>Financial Impact</TableHead>
+                    <TableHead>Probability</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {scenarios.map((scenario) => (
-                    <tr key={scenario.id}>
-                      <td className="px-4 py-2 border">{scenario.name}</td>
-                      <td className="px-4 py-2 border">{new Date(scenario.created).toLocaleDateString()}</td>
-                      <td className="px-4 py-2 border">{scenario.type}</td>
-                      <td className={`px-4 py-2 border ${
+                    <TableRow key={scenario.id}>
+                      <TableCell>{scenario.name}</TableCell>
+                      <TableCell>{new Date(scenario.created).toLocaleDateString()}</TableCell>
+                      <TableCell>{scenario.type}</TableCell>
+                      <TableCell className={
                         scenario.impactLevel === "High" ? "text-red-500" : 
                         scenario.impactLevel === "Medium" ? "text-yellow-500" : 
                         "text-green-500"
-                      }`}>
+                      }>
                         {scenario.impactLevel}
-                      </td>
-                      <td className="px-4 py-2 border">${scenario.financialImpact.toLocaleString()}</td>
-                      <td className="px-4 py-2 border">{scenario.probability}%</td>
-                      <td className="px-4 py-2 border">
-                        <Button variant="link" size="sm" onClick={() => handleViewScenario(scenario)}>
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell>${scenario.financialImpact.toLocaleString()}</TableCell>
+                      <TableCell>{scenario.probability}%</TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button variant="link" size="sm" onClick={() => handleViewScenario(scenario)}>
+                            View
+                          </Button>
+                          <Button variant="link" size="sm" onClick={() => {
+                            setSelectedScenario(scenario);
+                            handleEditScenario();
+                          }}>
+                            Edit
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </GlassCard>
         </div>
       </div>
+      
+      <Dialog open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete Scenario</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this scenario? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button variant="outline" onClick={() => setIsDeleteConfirmOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteScenario}>Delete</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </PageTransition>
   );
 };
