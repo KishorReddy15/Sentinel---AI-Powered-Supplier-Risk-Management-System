@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PageTransition from '@/components/ui/PageTransition';
 import GlassCard from '@/components/ui/GlassCard';
@@ -39,15 +38,26 @@ const Logistics = () => {
   });
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [showFlightPaths, setShowFlightPaths] = useState(true);
 
   const handleAddPartner = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Just show a success message since this is a demo
+    const partner = {
+      id: Date.now(),
+      name: newPartner.name,
+      type: newPartner.type,
+      location: newPartner.location,
+      services: newPartner.services.split(',').map(service => service.trim()),
+      coordinates: [
+        parseFloat(newPartner.coordinates[0]),
+        parseFloat(newPartner.coordinates[1])
+      ] as [number, number],
+    };
+    
     toast.success(`Added logistics partner: ${newPartner.name}`);
     setOpenDialog(false);
     
-    // Reset form
     setNewPartner({
       name: '',
       type: 'carrier',
@@ -59,6 +69,7 @@ const Logistics = () => {
 
   const handleLocationClick = (location: any) => {
     setSelectedLocation(location);
+    toast.info(`Selected ${location.name}`);
   };
 
   return (
@@ -123,6 +134,38 @@ const Logistics = () => {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="longitude" className="text-right">
+                      Longitude
+                    </Label>
+                    <Input
+                      id="longitude"
+                      type="number"
+                      value={newPartner.coordinates[0]}
+                      onChange={(e) => setNewPartner({...newPartner, coordinates: [e.target.value, newPartner.coordinates[1]]})}
+                      className="col-span-3"
+                      placeholder="e.g. -97.7431"
+                      min="-180"
+                      max="180"
+                      step="0.0001"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="latitude" className="text-right">
+                      Latitude
+                    </Label>
+                    <Input
+                      id="latitude"
+                      type="number"
+                      value={newPartner.coordinates[1]}
+                      onChange={(e) => setNewPartner({...newPartner, coordinates: [newPartner.coordinates[0], e.target.value]})}
+                      className="col-span-3"
+                      placeholder="e.g. 30.2672"
+                      min="-90"
+                      max="90"
+                      step="0.0001"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="services" className="text-right">
                       Services
                     </Label>
@@ -149,13 +192,26 @@ const Logistics = () => {
               <Warehouse className="mr-2 text-primary" />
               <h2 className="text-2xl font-semibold">Global Logistics Network</h2>
             </div>
-            <p className="text-gray-700 mb-4">
-              Interactive map of our global warehouses, ports, and major logistics hubs. Click on any location for more details.
-            </p>
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-gray-700">
+                Interactive map of our global warehouses, ports, and major logistics hubs. Click on any location for more details.
+              </p>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowFlightPaths(!showFlightPaths)}
+                >
+                  {showFlightPaths ? 'Hide Supply Chains' : 'Show Supply Chains'}
+                </Button>
+              </div>
+            </div>
             <GlobalMap 
               locations={locations}
               height="500px"
               onLocationClick={handleLocationClick}
+              showFlightPaths={showFlightPaths}
+              focusLocation={selectedLocation}
             />
             <div className="flex justify-between mt-4">
               <div className="flex items-center space-x-6">
@@ -167,9 +223,15 @@ const Logistics = () => {
                   <div className="w-3 h-3 rounded-full bg-[#457b9d] mr-2"></div>
                   <span className="text-sm">Ports</span>
                 </div>
+                {showFlightPaths && (
+                  <div className="flex items-center">
+                    <div className="w-5 h-0.5 bg-[#30D5C8] mr-2"></div>
+                    <span className="text-sm">Supply Chains</span>
+                  </div>
+                )}
               </div>
               <Button variant="outline" size="sm" onClick={() => setSelectedLocation(null)}>
-                Reset Selection
+                Reset View
               </Button>
             </div>
           </GlassCard>
