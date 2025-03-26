@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,39 +19,43 @@ import Contact from "@/pages/Contact";
 import Auth from "@/pages/Auth";
 import Dashboard from "@/pages/Dashboard";
 import NotFound from "@/pages/NotFound";
+import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-grow pt-16">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/features" element={<Features />} />
-                <Route path="/supplier-risk" element={<SupplierRisk />} />
-                <Route path="/logistics" element={<Logistics />} />
-                <Route path="/scenario-planning" element={<ScenarioPlanning />} />
-                <Route path="/alerts" element={<Alerts />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </AuthProvider>
-      </TooltipProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <TooltipProvider>
+          <AuthProvider>
+            <Toaster />
+            <Sonner />
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-grow pt-16">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/features" element={<Features />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/supplier-risk" element={<SupplierRisk />} />
+                  <Route path="/logistics" element={<Logistics />} />
+                  <Route path="/scenario-planning" element={<ScenarioPlanning />} />
+                  <Route path="/alerts" element={<Alerts />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </AuthProvider>
+        </TooltipProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

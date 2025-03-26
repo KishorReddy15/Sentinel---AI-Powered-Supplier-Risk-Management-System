@@ -4,6 +4,7 @@ import PageTransition from '@/components/ui/PageTransition';
 import GlassCard from '@/components/ui/GlassCard';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Shield } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
@@ -154,6 +155,23 @@ const Dashboard = () => {
             >
               <h3 className="font-medium mb-1">Alerts</h3>
               <p className="text-sm text-gray-500">View and manage alerts</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Admin Panel */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Administration</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div 
+              className="p-4 border border-gray-200 rounded-md bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate('/admin')}
+            >
+              <div className="flex items-center mb-1">
+                <Shield className="h-4 w-4 mr-2 text-primary" />
+                <h3 className="font-medium">Admin Panel</h3>
+              </div>
+              <p className="text-sm text-gray-500">Database migration and system settings</p>
             </div>
           </div>
         </div>
