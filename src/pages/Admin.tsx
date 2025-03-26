@@ -34,7 +34,7 @@ const Admin = () => {
         </div>
 
         {usingMockSupabase && (
-          <Alert variant="warning" className="mb-6">
+          <Alert variant="destructive" className="mb-6">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Supabase Configuration Missing</AlertTitle>
             <AlertDescription>

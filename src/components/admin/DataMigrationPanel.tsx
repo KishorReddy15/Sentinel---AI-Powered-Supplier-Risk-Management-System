@@ -99,7 +99,7 @@ const DataMigrationPanel = () => {
       <CardContent>
         <div className="space-y-4">
           {usingMockSupabase && (
-            <Alert variant="destructive" className="mb-4">
+            <Alert variant="warning" className="mb-4">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 <strong>Environment Variables Missing:</strong> Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment to connect to your real Supabase project.
