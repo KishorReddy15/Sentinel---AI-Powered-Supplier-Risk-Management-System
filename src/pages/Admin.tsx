@@ -3,9 +3,11 @@ import React from 'react';
 import PageTransition from '@/components/ui/PageTransition';
 import GlassCard from '@/components/ui/GlassCard';
 import DataMigrationPanel from '@/components/admin/DataMigrationPanel';
-import { Shield } from 'lucide-react';
+import { Shield, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { usingMockSupabase } from '@/lib/supabase';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const Admin = () => {
   const { user, isAuthenticated } = useAuth();
@@ -30,6 +32,17 @@ const Admin = () => {
             <p className="text-sm text-gray-500">{user?.company || 'Company'}</p>
           </div>
         </div>
+
+        {usingMockSupabase && (
+          <Alert variant="warning" className="mb-6">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Supabase Configuration Missing</AlertTitle>
+            <AlertDescription>
+              You're using a mock Supabase connection. To use real Supabase services, please set 
+              the VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="space-y-8">
           <section>

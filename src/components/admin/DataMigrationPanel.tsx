@@ -4,7 +4,9 @@ import { createTables, migrateAllData, migrateSuppliers, migrateLogistics, migra
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { AlertCircle, CheckCircle, Database, Upload } from 'lucide-react';
+import { AlertCircle, CheckCircle, Database, Upload, Info } from 'lucide-react';
+import { usingMockSupabase } from '@/lib/supabase';
+import { Alert, AlertDescription } from '../ui/alert';
 
 const DataMigrationPanel = () => {
   const [isMigrating, setIsMigrating] = useState(false);
@@ -96,6 +98,15 @@ const DataMigrationPanel = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          {usingMockSupabase && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                <strong>Environment Variables Missing:</strong> Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment to connect to your real Supabase project.
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="bg-muted p-4 rounded-md">
             <h3 className="font-medium mb-2">Migration Steps:</h3>
             <ol className="list-decimal list-inside space-y-2">
@@ -164,11 +175,11 @@ const DataMigrationPanel = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={handleCreateTables} disabled={isMigrating}>
+        <Button variant="outline" onClick={handleCreateTables} disabled={isMigrating || usingMockSupabase}>
           <Database className="mr-2 h-4 w-4" />
           Generate Table SQL
         </Button>
-        <Button onClick={handleMigrateAll} disabled={isMigrating}>
+        <Button onClick={handleMigrateAll} disabled={isMigrating || usingMockSupabase}>
           {isMigrating ? (
             <>
               <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
