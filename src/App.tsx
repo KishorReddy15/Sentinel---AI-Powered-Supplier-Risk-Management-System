@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@/components/ui/theme-provider';
@@ -9,7 +10,7 @@ import MobileNav from '@/components/layout/MobileNav';
 import Loader from '@/components/ui/Loader';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { AuthProvider } from '@/context/AuthContext';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import './App.css';
 
 // Lazy load pages for better performance
@@ -38,7 +39,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="theme">
