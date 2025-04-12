@@ -1,69 +1,50 @@
-# Welcome to your Lovable project
+# Sentinel : AI-Powered Supplier Risk Management System
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/d4c30c4e-2698-4983-8ac8-e3db89e8d9c7
+This project is a web platform designed to empower businesses with AI-driven tools for managing supplier risk. It leverages advanced technologies to help businesses proactively identify, assess, and mitigate potential disruptions in their supply chains, ensuring operational resilience and business continuity. Key features include:
 
-## How can I edit this code?
+* **Supplier Risk Analysis:** Provides a comprehensive view of supplier-related risks, incorporating a dynamic supplier risk scoring system.
+* **Global Logistics Overview:** Offers a real-time view of supply chain logistics operations, integrating with external APIs to visualize shipment locations and track delivery routes.
+* **Scenario Planning:** Empowers users to simulate various disruption scenarios and evaluate their potential impact on supply chains.
+* **Intelligent Alerts:** Delivers timely notifications about potential supply chain disruptions, with contextual and predictive alerting.
+* **Predictive Risk Forecasting:** Anticipates potential supply chain disruptions using machine learning techniques.
+* **Data Visualization:** Employs interactive maps, charts, and dashboards to provide clear and actionable insights into supply chain data and risks.
 
-There are several ways of editing your application.
+## Key Technologies
 
-**Use Lovable**
+This project is built with:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d4c30c4e-2698-4983-8ac8-e3db89e8d9c7) and start prompting.
+* Vite
+* TypeScript
+* React
+* shadcn-ui
+* Tailwind CSS
 
-Changes made via Lovable will be committed automatically to this repo.
+## How to Use This Project
 
-**Use your preferred IDE**
+This project provides a foundation for building an AI-powered supplier risk management system. Here's how you can use it:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1.  **Clone the Repository:** To get a copy of this project on your computer, use Git to clone the repository. Open your terminal or command prompt and navigate to the directory where you want to store the project files. Then, use the following command, replacing `<repository_url>` with the URL of this repository:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+    ```bash
+    git clone https://github.com/KishorReddy15/Sentinel---AI-Powered-Supplier-Risk-Management-System
+    ```
 
-Follow these steps:
+2.  **Install Dependencies:** Navigate to the project directory and install the necessary dependencies using npm:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+    ```bash
+    npm install
+    ```
+3.  **Run the Application:** Start the development server:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+    ```bash
+    npm run dev
+    ```
+4.  **Explore the Features:** The application provides a user interface to explore the features.
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d4c30c4e-2698-4983-8ac8-e3db89e8d9c7) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+    * **Homepage:** Overview of the platform's capabilities.
+    * **Supplier Risk Page:** Access supplier risk analysis tools.
+    * **Logistics Page:** Visualize and manage logistics operations.
+    * **Scenario Planning Page:** Simulate disruption scenarios.
+    * **Intelligent Alerts Page:** View and manage alerts.
